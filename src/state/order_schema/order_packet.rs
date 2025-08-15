@@ -1,6 +1,6 @@
 // By aliasing the BorshDeserialize and BorshSerialize traits, we prevent Shank from
 // writing structs with these annotations to the IDL.
-use borsh::{BorshDeserialize as Deserialize, BorshSerialize as Serialize};
+use borsh::{to_vec, BorshDeserialize as Deserialize, BorshSerialize as Serialize};
 
 use crate::{
     quantities::{BaseLots, QuoteLots, Ticks, WrapperU64},
@@ -770,11 +770,11 @@ fn test_decode_order_packet() {
             reject_post_only,
             use_only_deposited_funds,
         };
-        let bytes = packet.try_to_vec().unwrap();
+        let bytes = to_vec(&packet).unwrap();
         let decoded_normal = decode_order_packet(&bytes).unwrap();
         let decoded_inferred_1 = decode_order_packet(&bytes[..bytes.len() - 1]).unwrap();
         let decoded_inferred_2 = decode_order_packet(&bytes[..bytes.len() - 3]).unwrap();
-        let deprecated_bytes = deprecated_packet.try_to_vec().unwrap();
+        let deprecated_bytes = to_vec(&deprecated_packet).unwrap();
         let decoded_deprecated = decode_order_packet(&deprecated_bytes).unwrap();
         assert_eq!(packet, decoded_normal);
         assert_eq!(decoded_normal, decoded_inferred_1);
@@ -825,11 +825,11 @@ fn test_decode_order_packet() {
             match_limit,
             use_only_deposited_funds,
         };
-        let bytes = packet.try_to_vec().unwrap();
+        let bytes = to_vec(&packet).unwrap();
         let decoded_normal = decode_order_packet(&bytes).unwrap();
         let decoded_inferred_1 = decode_order_packet(&bytes[..bytes.len() - 1]).unwrap();
         let decoded_inferred_2 = decode_order_packet(&bytes[..bytes.len() - 3]).unwrap();
-        let deprecated_bytes = deprecated_packet.try_to_vec().unwrap();
+        let deprecated_bytes = to_vec(&deprecated_packet).unwrap();
         let decoded_deprecated = decode_order_packet(&deprecated_bytes).unwrap();
         assert_eq!(packet, decoded_normal);
         assert_eq!(decoded_normal, decoded_inferred_1);
@@ -892,11 +892,11 @@ fn test_decode_order_packet() {
             match_limit,
             use_only_deposited_funds,
         };
-        let bytes = packet.try_to_vec().unwrap();
+        let bytes = to_vec(&packet).unwrap();
         let decoded_normal = decode_order_packet(&bytes).unwrap();
         let decoded_inferred_1 = decode_order_packet(&bytes[..bytes.len() - 2]).unwrap();
         let decoded_inferred_2 = decode_order_packet(&bytes[..bytes.len() - 1]).unwrap();
-        let deprecated_bytes = deprecated_packet.try_to_vec().unwrap();
+        let deprecated_bytes = to_vec(&deprecated_packet).unwrap();
         let decoded_deprecated = decode_order_packet(&deprecated_bytes).unwrap();
         assert_eq!(packet, decoded_normal);
         assert_eq!(decoded_normal, decoded_inferred_1);
